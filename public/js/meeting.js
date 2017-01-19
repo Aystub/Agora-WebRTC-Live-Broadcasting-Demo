@@ -58,7 +58,7 @@
             if(dkLoc === '52-dk'){
               $.ajax({
                   type: "POST",
-                  url: [baseUrl, '/broadcast/', "1431401299982681527", "/start_viewing"].join(''),
+                  url: [baseUrl, '/broadcast/', "1431308421499454902", "/start_viewing"].join(''),
                   headers: {Authorization: randomUUID},
                   success: function(response) {
                       console.log(response);
@@ -67,7 +67,7 @@
                       client.init(response.channel_info.channel_key, function (obj) {
                           console.log("AgoraRTC client initialized");
 
-                          client.join(response.channel_info.channel, "1322058803", function() {
+                          client.join(response.channel_info.channel, 1322058803, function() {
                               console.log("User " + uid + " join channel successfully");
                               console.log("Timestamp: " + Date.now());
                               if (role === 'broadcaster') {
@@ -95,7 +95,7 @@
                       client.init(response.media_channel_key, function (obj) {
                           console.log("AgoraRTC client initialized");
 
-                          client.join(channel, undefined, function(uid) {
+                          client.join(channel, 1322058803, function() {
                               console.log("User " + uid + " join channel successfully");
                               console.log("Timestamp: " + Date.now());
                               if (role === 'broadcaster') {

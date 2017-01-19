@@ -14,6 +14,16 @@
         height: $('.main-container').height()
     });
     $(function() {
+        function guid() {
+              function s4() {
+                  return Math.floor((1 + Math.random()) * 0x10000)
+                      .toString(16)
+                      .substring(1);
+              }
+              return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                  s4() + '-' + s4() + s4() + s4();
+          }
+
         var resolution = Cookies.get("resolution") || "480p",
             maxFrameRate = Number(Cookies.get("maxFrameRate") || 15),
             //maxBitRate        = Number(Cookies.get("maxBitRate") || 750),
@@ -31,6 +41,7 @@
             lastLocalStreamId,
             isMixed = false,
             audioSelect = document.querySelector('select#audioSource'),
+            randomUUID = "web::" + guid(),
             videoSelect = document.querySelector('select#videoSource');
 
         /* Joining channel */
@@ -42,27 +53,60 @@
                 }
             });
 
-            $.ajax({
-                url: mediaChannelKeyURL,
-                error: function() {
-                    console.log("Failed to get media_channel_key");
-                },
-                success: function(response) {
-                    client.init(response.media_channel_key, function (obj) {
-                        console.log("AgoraRTC client initialized");
+            var isDemo = true;
+            if(!isDemo){
+              $.ajax({
+                  type: "POST",
+                  url: [BASE_URL, '/broadcast/', "1431308421499454902", "/start_viewing"].join(''),
+                  headers: {Authorization: randomUUID},
+                  success: function(response) {
+                      console.log(response);
+                      console.log("channel key: " + response.media_channel_key);
 
-                        client.join(channel, undefined, function(uid) {
-                            console.log("User " + uid + " join channel successfully");
-                            console.log("Timestamp: " + Date.now());
-                            if (role === 'broadcaster') {
-                                getDevices();
-                                localStream = initLocalStream(uid);
-                                lastLocalStreamId = localStream.getId();
-                            }
-                        });
-                    });
-                }
-            });
+                      client.init(response.channel_info.channel_key, function (obj) {
+                          console.log("AgoraRTC client initialized");
+
+                          client.join(response.channel_info.channel, undefined, function(uid) {
+                              console.log("User " + uid + " join channel successfully");
+                              console.log("Timestamp: " + Date.now());
+                              if (role === 'broadcaster') {
+                                  getDevices();
+                                  localStream = initLocalStream(uid);
+                                  lastLocalStreamId = localStream.getId();
+                              }
+                          });
+                      });
+                  },
+                  error: function(data){
+                      authFailure(data);
+                  }
+              });
+            }else{
+              $.ajax({
+                  url: mediaChannelKeyURL,
+                  error: function() {
+                      console.log("Failed to get media_channel_key");
+                  },
+                  success: function(response) {
+                      console.log(response);
+                      console.log("channel key: " + response.media_channel_key);
+
+                      client.init(response.media_channel_key, function (obj) {
+                          console.log("AgoraRTC client initialized");
+
+                          client.join(channel, undefined, function(uid) {
+                              console.log("User " + uid + " join channel successfully");
+                              console.log("Timestamp: " + Date.now());
+                              if (role === 'broadcaster') {
+                                  getDevices();
+                                  localStream = initLocalStream(uid);
+                                  lastLocalStreamId = localStream.getId();
+                              }
+                          });
+                      });
+                  }
+              });
+            }
         }());
 
         function getDevices() {

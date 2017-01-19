@@ -29,6 +29,7 @@
             //maxBitRate        = Number(Cookies.get("maxBitRate") || 750),
             channel = Cookies.get("roomName"),
             role = Cookies.get("clientRole"),
+            dkLoc = Cookies.get("dkLocation"),
             remoteStreamList = [],
             client = AgoraRTC.createLiveClient(),
             disableAudio = false,
@@ -54,20 +55,19 @@
                 }
             });
 
-            var isDemo = false;
-            if(!isDemo){
+            if(dkLoc === '52-dk'){
               $.ajax({
                   type: "POST",
                   url: [baseUrl, '/broadcast/', "1431308421499454902", "/start_viewing"].join(''),
                   headers: {Authorization: randomUUID},
                   success: function(response) {
                       console.log(response);
-                      console.log("channel key: " + response.channel_info.channel_key);
+                      console.log("52 channel key: " + response.channel_info.channel_key);
 
                       client.init(response.channel_info.channel_key, function (obj) {
                           console.log("AgoraRTC client initialized");
 
-                          client.join(response.channel_info.channel, undefined, function(uid) {
+                          client.join(channel, undefined, function(uid) {
                               console.log("User " + uid + " join channel successfully");
                               console.log("Timestamp: " + Date.now());
                               if (role === 'broadcaster') {

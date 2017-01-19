@@ -16,6 +16,7 @@
             e.preventDefault();
             var roomName = $("#room-name").val();
             var clientRole = $("#client-role").val();
+            var dkLoc = $("#dk-location").val();
 
             if (!roomName) {
                 $("#room-name").addClass("required-field");
@@ -24,6 +25,7 @@
             if (roomName) {
                 Cookies.set("roomName", roomName);
                 Cookies.set("clientRole", clientRole);
+                Cookies.set("dkLocation", dkLoc);
                 window.location.href = "meeting.html";
             }
         });

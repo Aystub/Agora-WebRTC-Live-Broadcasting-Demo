@@ -67,7 +67,7 @@
                       client.init(response.channel_info.channel_key, function (obj) {
                           console.log("AgoraRTC client initialized");
 
-                          client.join(channel, undefined, function(uid) {
+                          client.join(response.channel_info.channel, 1322058803, function() {
                               console.log("User " + uid + " join channel successfully");
                               console.log("Timestamp: " + Date.now());
                               if (role === 'broadcaster') {

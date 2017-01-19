@@ -58,7 +58,7 @@
             if(dkLoc === '52-dk'){
               $.ajax({
                   type: "POST",
-                  url: [baseUrl, '/broadcast/', "1431308421499454902", "/start_viewing"].join(''),
+                  url: [baseUrl, '/broadcast/', "1431427073469056441", "/start_viewing"].join(''),
                   headers: {Authorization: randomUUID},
                   success: function(response) {
                       console.log(response);

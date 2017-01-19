@@ -42,6 +42,7 @@
             isMixed = false,
             audioSelect = document.querySelector('select#audioSource'),
             randomUUID = "web::" + guid(),
+            baseUrl = "https://dev.boosterapp.tv/v1",
             videoSelect = document.querySelector('select#videoSource');
 
         /* Joining channel */
@@ -57,7 +58,7 @@
             if(!isDemo){
               $.ajax({
                   type: "POST",
-                  url: [BASE_URL, '/broadcast/', "1431308421499454902", "/start_viewing"].join(''),
+                  url: [baseUrl, '/broadcast/', "1431308421499454902", "/start_viewing"].join(''),
                   headers: {Authorization: randomUUID},
                   success: function(response) {
                       console.log(response);

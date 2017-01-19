@@ -53,7 +53,7 @@
                 }
             });
 
-            var isDemo = true;
+            var isDemo = false;
             if(!isDemo){
               $.ajax({
                   type: "POST",
@@ -61,7 +61,7 @@
                   headers: {Authorization: randomUUID},
                   success: function(response) {
                       console.log(response);
-                      console.log("channel key: " + response.media_channel_key);
+                      console.log("channel key: " + response.channel_info.channel_key);
 
                       client.init(response.channel_info.channel_key, function (obj) {
                           console.log("AgoraRTC client initialized");

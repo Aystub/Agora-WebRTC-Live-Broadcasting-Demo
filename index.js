@@ -40,7 +40,7 @@ var generateMediaChannelDynamicKey = function(req, resp){
         return resp.status(400).json({'error':'expiredTs is required'}).send();
     }
 
-    var media_channel_key = DynamicKey5.generateMediaChannelKey(APP_ID, APP_CERTIFICATE, channelName, unixTs, randomInt, "4537298478", expiredTs);
+    var media_channel_key = DynamicKey5.generateMediaChannelKey(APP_ID, APP_CERTIFICATE, channelName, unixTs, randomInt, 0, expiredTs);
 
     return resp.json({'media_channel_key': media_channel_key}).send();
 };
